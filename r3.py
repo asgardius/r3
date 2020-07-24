@@ -176,6 +176,7 @@ antenna = Antenna()
 running = True
 live = True
 complete = False
+debug = False # This set debug mode
 #rect = pygame.Rect((0, 0), (32, 32))
 #image = pygame.Surface((32, 32))
 #image.fill(WHITE)
@@ -218,7 +219,7 @@ while running:
         ast3.velocity[0] = -120 * dt * bx
         ast3.velocity[1] = -120 * dt * by
     
-    if live:
+    if (live & debug == False):
         if pygame.sprite.collide_rect(player, css1):
             live = False
             pygame.mixer.music.stop()
@@ -243,7 +244,7 @@ while running:
     elif b1:
         #this start music playback
         pygame.mixer.music.play(-1)
-    elif b2:
+    elif (b2 & debug):
         #this trigger spaceship crash event
         live = False
         pygame.mixer.music.stop()
@@ -285,13 +286,15 @@ while running:
     else:
         screen.blit(supernova.image, supernova.rect)
     rfps = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
-    sysclock = font.render(str(datetime.datetime.utcnow()), True, pygame.Color('white'))
-    cpuarch = font.render(str(platform.machine()), True, pygame.Color('white'))
+    if debug:
+        sysclock = font.render(str(datetime.datetime.utcnow()), True, pygame.Color('white'))
+        cpuarch = font.render(str(platform.machine()), True, pygame.Color('white'))
     #infox = font.render(str(bx), True, pygame.Color('white'))
     #infoy = font.render(str(by), True, pygame.Color('white'))
     screen.blit(rfps, (50, 50))
-    screen.blit(sysclock, (120, 50))
-    screen.blit(cpuarch, (50, 80))
+    if debug:
+        screen.blit(sysclock, (120, 50))
+        screen.blit(cpuarch, (50, 80))
     #screen.blit(infox, (50, 110))
     #screen.blit(infoy, (50, 140))
     pygame.display.update()
