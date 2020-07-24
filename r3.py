@@ -11,7 +11,7 @@ import subprocess
 pygame.init()
 pygame.joystick.init()
 screen = pygame.display.set_mode((1024, 600))
-pygame.display.set_caption('Space - Virtualx Game Engine')
+pygame.display.set_caption('The Red Robot Radio - Virtualx Game Engine')
 font = pygame.font.Font(None, 30)
 clock = pygame.time.Clock()
 FPS = 6000
