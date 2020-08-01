@@ -180,6 +180,8 @@ debug = False # This set debug mode
 #rect = pygame.Rect((0, 0), (32, 32))
 #image = pygame.Surface((32, 32))
 #image.fill(WHITE)
+start_time = pygame.time.get_ticks()
+runtime = 0
 while running:
     dt = clock.tick(FPS) / 1000
     #screen.fill(BLACK)
@@ -218,6 +220,7 @@ while running:
         ast2.velocity[1] = -150 * dt * by
         ast3.velocity[0] = -120 * dt * bx
         ast3.velocity[1] = -120 * dt * by
+        runtime = pygame.time.get_ticks() - start_time
     
     if (live & debug == False):
         if pygame.sprite.collide_rect(player, css1):
@@ -262,6 +265,7 @@ while running:
         live = True
         complete = False
         pygame.mixer.music.play(-1)
+        start_time = pygame.time.get_ticks()
     player.update()
     css1.update()
     css2.update()
@@ -282,19 +286,39 @@ while running:
         screen.blit(sat1.image, sat1.rect)
         screen.blit(goal.image, goal.rect)
     elif complete:
+        playhr = (int(runtime / 3600000))
+        playmin = (int(runtime / 60000) - (playhr * 60))
+        playsec = (int(runtime / 1000) - (playmin * 60) - (playhr * 3600))
+        playmsec = (runtime - (playsec * 1000) - (playmin * 60000) - (playhr * 3600000))
+        playtime = "%d:%02d:%02d:%03d" % (playhr, playmin, playsec, playmsec)
         screen.blit(antenna.image, antenna.rect)
+        yourtimetext = font.render(str("Your Time"), True, pygame.Color('white'))
+        screen.blit(yourtimetext, (450, 500))
+        yourtime = font.render(str(playtime), True, pygame.Color('white'))
+        screen.blit(yourtime, (450, 540))
     else:
+        playhr = (int(runtime / 3600000))
+        playmin = (int(runtime / 60000) - (playhr * 60))
+        playsec = (int(runtime / 1000) - (playmin * 60) - (playhr * 3600))
+        playmsec = (runtime - (playsec * 1000) - (playmin * 60000) - (playhr * 3600000))
+        playtime = "%d:%02d:%02d:%03d" % (playhr, playmin, playsec, playmsec)
         screen.blit(supernova.image, supernova.rect)
+        yourtimetext = font.render(str("Your Time"), True, pygame.Color('white'))
+        screen.blit(yourtimetext, (450, 500))
+        yourtime = font.render(str(playtime), True, pygame.Color('white'))
+        screen.blit(yourtime, (450, 540))
     rfps = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
+    screen.blit(rfps, (50, 50))
     if debug:
         sysclock = font.render(str(datetime.datetime.utcnow()), True, pygame.Color('white'))
         cpuarch = font.render(str(platform.machine()), True, pygame.Color('white'))
+        playcount = font.render(str(runtime), True, pygame.Color('white'))
     #infox = font.render(str(bx), True, pygame.Color('white'))
     #infoy = font.render(str(by), True, pygame.Color('white'))
-    screen.blit(rfps, (50, 50))
     if debug:
         screen.blit(sysclock, (120, 50))
         screen.blit(cpuarch, (50, 80))
+        screen.blit(playcount, (160, 80))
     #screen.blit(infox, (50, 110))
     #screen.blit(infoy, (50, 140))
     pygame.display.update()
