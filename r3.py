@@ -106,6 +106,20 @@ class Sat1(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.move_ip(*self.velocity)
+class Sat2(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.x = 600
+        self.y = 100
+        self.image = pygame.image.load('sat.png')
+        #self.image = pygame.Surface((32, 32))
+        #self.image.fill(WHITE)
+        #self.rect = self.image.get_rect()  # Get rect of some size as 'image'.
+        self.rect = pygame.Rect(self.x,self.y,30, 22)
+        self.velocity = [0, 0]
+
+    def update(self):
+        self.rect.move_ip(*self.velocity)
 class Goal(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
@@ -166,6 +180,7 @@ player = Player()
 css1 = Css1()
 css2 = Css2()
 sat1 = Sat1()
+sat2 = Sat2()
 goal = Goal()
 ast1 = Ast1()
 ast2 = Ast2()
@@ -213,6 +228,7 @@ while running:
         css1.velocity[1] = -600 * dt * by
         css2.velocity = css1.velocity
         sat1.velocity = css1.velocity
+        sat2.velocity = css1.velocity
         goal.velocity = css1.velocity
         ast1.velocity[0] = -200 * dt * bx
         ast1.velocity[1] = -200 * dt * by
@@ -233,6 +249,10 @@ while running:
             pygame.mixer.music.stop()
             csfx.play()
         elif pygame.sprite.collide_rect(player, sat1):
+            live = False
+            pygame.mixer.music.stop()
+            csfx.play()
+        elif pygame.sprite.collide_rect(player, sat2):
             live = False
             pygame.mixer.music.stop()
             csfx.play()
@@ -258,6 +278,7 @@ while running:
         css1 = Css1()
         css2 = Css2()
         sat1 = Sat1()
+        sat2 = Sat2()
         goal = Goal()
         ast1 = Ast1()
         ast2 = Ast2()
@@ -270,6 +291,7 @@ while running:
     css1.update()
     css2.update()
     sat1.update()
+    sat2.update()
     goal.update()
     ast1.update()
     ast2.update()
@@ -284,6 +306,7 @@ while running:
         screen.blit(css1.image, css1.rect)
         screen.blit(css2.image, css2.rect)
         screen.blit(sat1.image, sat1.rect)
+        screen.blit(sat2.image, sat2.rect)
         screen.blit(goal.image, goal.rect)
     elif complete:
         playhr = (int(runtime / 3600000))
