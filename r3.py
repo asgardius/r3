@@ -219,20 +219,20 @@ else:
             #b3 is for square button on ds4
             b3 = joystick.get_button(3)
             if live:
-                player.velocity[0] = 600 * dt * (ax - bx)
-                player.velocity[1] = 600 * dt * (ay - by)
-                css1.velocity[0] = -600 * dt * bx
-                css1.velocity[1] = -600 * dt * by
+                player.velocity[0] = int(600 * dt * (ax - bx))
+                player.velocity[1] = int(600 * dt * (ay - by))
+                css1.velocity[0] = int(-600 * dt * bx)
+                css1.velocity[1] = int(-600 * dt * by)
                 css2.velocity = css1.velocity
                 sat1.velocity = css1.velocity
                 sat2.velocity = css1.velocity
                 goal.velocity = css1.velocity
-                ast1.velocity[0] = -200 * dt * bx
-                ast1.velocity[1] = -200 * dt * by
-                ast2.velocity[0] = -150 * dt * bx
-                ast2.velocity[1] = -150 * dt * by
-                ast3.velocity[0] = -120 * dt * bx
-                ast3.velocity[1] = -120 * dt * by
+                ast1.velocity[0] = int(-200 * dt * bx)
+                ast1.velocity[1] = int(-200 * dt * by)
+                ast2.velocity[0] = int(-150 * dt * bx)
+                ast2.velocity[1] = int(-150 * dt * by)
+                ast3.velocity[0] = int(-120 * dt * bx)
+                ast3.velocity[1] = int(-120 * dt * by)
                 runtime = pygame.time.get_ticks() - start_time
                 if (live & debug == False):
                     if pygame.sprite.collide_rect(player, css1):
