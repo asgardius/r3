@@ -60,10 +60,10 @@ else:
                 self.rect = self.image.get_rect()  # Get rect of some size as 'image'.
                 self.velocity = [0, 0]
         class Player(pygame.sprite.Sprite):
-            def __init__(self):
+            def __init__(self,xset,yset):
                 pygame.sprite.Sprite.__init__(self)
-                self.x = 12
-                self.y = 190
+                self.x = xset
+                self.y = yset
                 self.image = pygame.image.load('ss.png')
                 #self.image = pygame.Surface((32, 32))
                 #self.image.fill(WHITE)
@@ -72,11 +72,11 @@ else:
                 self.velocity = [0, 0]
             def update(self):
                 self.rect.move_ip(*self.velocity)
-        class Css1(pygame.sprite.Sprite):
-            def __init__(self):
+        class Css(pygame.sprite.Sprite):
+            def __init__(self,xset,yset):
                 pygame.sprite.Sprite.__init__(self)
-                self.x = 400
-                self.y = 190
+                self.x = xset
+                self.y = yset
                 self.image = pygame.image.load('css.png')
                 #self.image = pygame.Surface((32, 32))
                 #self.image.fill(WHITE)
@@ -85,37 +85,11 @@ else:
                 self.velocity = [0, 0]
             def update(self):
                 self.rect.move_ip(*self.velocity)
-        class Css2(pygame.sprite.Sprite):
-            def __init__(self):
+        class Sat(pygame.sprite.Sprite):
+            def __init__(self,xset,yset):
                 pygame.sprite.Sprite.__init__(self)
-                self.x = 500
-                self.y = 400
-                self.image = pygame.image.load('css.png')
-                #self.image = pygame.Surface((32, 32))
-                #self.image.fill(WHITE)
-                #self.rect = self.image.get_rect()  # Get rect of some size as 'image'.
-                self.rect = pygame.Rect(self.x,self.y,108, 68)
-                self.velocity = [0, 0]
-            def update(self):
-                self.rect.move_ip(*self.velocity)
-        class Sat1(pygame.sprite.Sprite):
-            def __init__(self):
-                pygame.sprite.Sprite.__init__(self)
-                self.x = 550
-                self.y = -100
-                self.image = pygame.image.load('sat.png')
-                #self.image = pygame.Surface((32, 32))
-                #self.image.fill(WHITE)
-                #self.rect = self.image.get_rect()  # Get rect of some size as 'image'.
-                self.rect = pygame.Rect(self.x,self.y,30, 22)
-                self.velocity = [0, 0]
-            def update(self):
-                self.rect.move_ip(*self.velocity)
-        class Sat2(pygame.sprite.Sprite):
-            def __init__(self):
-                pygame.sprite.Sprite.__init__(self)
-                self.x = 600
-                self.y = 100
+                self.x = xset
+                self.y = yset
                 self.image = pygame.image.load('sat.png')
                 #self.image = pygame.Surface((32, 32))
                 #self.image.fill(WHITE)
@@ -125,10 +99,10 @@ else:
             def update(self):
                 self.rect.move_ip(*self.velocity)
         class Goal(pygame.sprite.Sprite):
-            def __init__(self):
+            def __init__(self,xset,yset):
                 pygame.sprite.Sprite.__init__(self)
-                self.x = 3000
-                self.y = -200
+                self.x = xset
+                self.y = yset
                 self.image = pygame.image.load('radio.png')
                 #self.image = pygame.Surface((32, 32))
                 #self.image.fill(WHITE)
@@ -137,11 +111,11 @@ else:
                 self.velocity = [0, 0]
             def update(self):
                 self.rect.move_ip(*self.velocity)
-        class Ast1(pygame.sprite.Sprite):
-            def __init__(self):
+        class Ast(pygame.sprite.Sprite):
+            def __init__(self,xset,yset):
                 pygame.sprite.Sprite.__init__(self)
-                self.x = 120
-                self.y = 200
+                self.x = xset
+                self.y = yset
                 self.image = pygame.image.load('asteroid.png')
                 #self.image = pygame.Surface((32, 32))
                 #self.image.fill(WHITE)
@@ -150,41 +124,15 @@ else:
                 self.velocity = [0, 0]
             def update(self):
                 self.rect.move_ip(*self.velocity)
-        class Ast2(pygame.sprite.Sprite):
-            def __init__(self):
-                pygame.sprite.Sprite.__init__(self)
-                self.x = 300
-                self.y = 100
-                self.image = pygame.image.load('asteroid.png')
-                #self.image = pygame.Surface((32, 32))
-                #self.image.fill(WHITE)
-                #self.rect = self.image.get_rect()  # Get rect of some size as 'image'.
-                self.rect = pygame.Rect(self.x,self.y,108, 78)
-                self.velocity = [0, 0]
-            def update(self):
-                self.rect.move_ip(*self.velocity)
-        class Ast3(pygame.sprite.Sprite):
-            def __init__(self):
-                pygame.sprite.Sprite.__init__(self)
-                self.x = 500
-                self.y = 150
-                self.image = pygame.image.load('asteroid.png')
-                #self.image = pygame.Surface((32, 32))
-                #self.image.fill(WHITE)
-                #self.rect = self.image.get_rect()  # Get rect of some size as 'image'.
-                self.rect = pygame.Rect(self.x,self.y,108, 78)
-                self.velocity = [0, 0]
-            def update(self):
-                self.rect.move_ip(*self.velocity)
-        player = Player()
-        css1 = Css1()
-        css2 = Css2()
-        sat1 = Sat1()
-        sat2 = Sat2()
-        goal = Goal()
-        ast1 = Ast1()
-        ast2 = Ast2()
-        ast3 = Ast3()
+        player = Player(12,190)
+        css1 = Css(400,190)
+        css2 = Css(500,400)
+        sat1 = Sat(550,-100)
+        sat2 = Sat(600,100)
+        goal = Goal(3000,-200)
+        ast1 = Ast(120,200)
+        ast2 = Ast(300,100)
+        ast3 = Ast(500,150)
         background = Background()
         supernova = Supernova()
         antenna = Antenna()
@@ -270,15 +218,15 @@ else:
                 csfx.play()
             elif b3:
                 #this restart the game
-                player = Player()
-                css1 = Css1()
-                css2 = Css2()
-                sat1 = Sat1()
-                sat2 = Sat2()
-                goal = Goal()
-                ast1 = Ast1()
-                ast2 = Ast2()
-                ast3 = Ast3()
+                player = Player(12,190)
+                css1 = Css(400,190)
+                css2 = Css(500,400)
+                sat1 = Sat(550,-100)
+                sat2 = Sat(600,100)
+                goal = Goal(3000,-200)
+                ast1 = Ast(120,200)
+                ast2 = Ast(300,100)
+                ast3 = Ast(500,150)
                 live = True
                 complete = False
                 pygame.mixer.music.play(-1)
