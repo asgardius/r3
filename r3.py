@@ -37,12 +37,16 @@ else:
         #cut_sound.play(-1)
         class Background(pygame.sprite.Sprite):
             def __init__(self):
-                super().__init__()
+                pygame.sprite.Sprite.__init__(self)
+                self.x = 0
+                self.y = 0
                 self.image = pygame.image.load('galaxy.png')
                 #self.image = pygame.Surface((32, 32))
                 #self.image.fill(WHITE)
                 self.rect = self.image.get_rect()  # Get rect of some size as 'image'.
                 self.velocity = [0, 0]
+            def update(self):
+                self.rect.move_ip(*self.velocity)
         class Supernova(pygame.sprite.Sprite):
             def __init__(self):
                 super().__init__()
@@ -69,6 +73,30 @@ else:
                 #self.image.fill(WHITE)
                 #self.rect = self.image.get_rect()  # Get rect of some size as 'image'.
                 self.rect = pygame.Rect(self.x,self.y,108, 68)
+                self.velocity = [0, 0]
+            def update(self):
+                self.rect.move_ip(*self.velocity)
+        class Wallh(pygame.sprite.Sprite):
+            def __init__(self,xset,yset):
+                pygame.sprite.Sprite.__init__(self)
+                self.x = xset
+                self.y = yset
+                #self.image = pygame.Surface((32, 32))
+                #self.image.fill(WHITE)
+                #self.rect = self.image.get_rect()  # Get rect of some size as 'image'.
+                self.rect = pygame.Rect(self.x,self.y,50, 1000)
+                self.velocity = [0, 0]
+            def update(self):
+                self.rect.move_ip(*self.velocity)
+        class Wallv(pygame.sprite.Sprite):
+            def __init__(self,xset,yset):
+                pygame.sprite.Sprite.__init__(self)
+                self.x = xset
+                self.y = yset
+                #self.image = pygame.Surface((32, 32))
+                #self.image.fill(WHITE)
+                #self.rect = self.image.get_rect()  # Get rect of some size as 'image'.
+                self.rect = pygame.Rect(self.x,self.y,3400, 50)
                 self.velocity = [0, 0]
             def update(self):
                 self.rect.move_ip(*self.velocity)
@@ -129,10 +157,14 @@ else:
         css2 = Css(500,400)
         sat1 = Sat(550,-100)
         sat2 = Sat(600,100)
-        goal = Goal(3000,-200)
+        goal = Goal(3000,-100)
         ast1 = Ast(120,200)
         ast2 = Ast(300,100)
         ast3 = Ast(500,150)
+        wall1 = Wallh(-100,-200)
+        wall2 = Wallh(3100,-200)
+        wall3 = Wallv(-200,-200)
+        wall4 = Wallv(-200,800)
         background = Background()
         supernova = Supernova()
         antenna = Antenna()
@@ -167,27 +199,36 @@ else:
             #b3 is for square button on ds4
             b3 = joystick.get_button(3)
             if live:
-                player.velocity[0] = int(600 * dt * (ax - bx))
-                player.velocity[1] = int(600 * dt * (ay - by))
-                css1.velocity[0] = int(-600 * dt * bx)
-                css1.velocity[1] = int(-600 * dt * by)
-                css2.velocity = css1.velocity
-                sat1.velocity = css1.velocity
-                sat2.velocity = css1.velocity
-                goal.velocity = css1.velocity
-                ast1.velocity[0] = int(-200 * dt * bx)
-                ast1.velocity[1] = int(-200 * dt * by)
-                ast2.velocity[0] = int(-150 * dt * bx)
-                ast2.velocity[1] = int(-150 * dt * by)
-                ast3.velocity[0] = int(-120 * dt * bx)
-                ast3.velocity[1] = int(-120 * dt * by)
                 runtime = pygame.time.get_ticks() - start_time
                 if (live & debug == False):
-                    if pygame.sprite.collide_rect(player, css1):
+                    if pygame.sprite.collide_rect(player, wall3):
+                        if ay < 0:
+                            ay = 0
+                    elif pygame.sprite.collide_rect(player, wall4):
+                        if ay > 0:
+                            ay = 0
+                    if pygame.sprite.collide_rect(player, wall1):
+                        if ax < 0:
+                            ax = 0
+                    elif pygame.sprite.collide_rect(player, wall2):
+                        if ax > 0:
+                            ax = 0
+                    if pygame.sprite.collide_rect(background, wall3):
+                        if by < 0:
+                            by = 0
+                    elif pygame.sprite.collide_rect(background, wall4):
+                        if by > 0:
+                            by = 0
+                    if pygame.sprite.collide_rect(background, wall1):
+                        if bx < 0:
+                            bx = 0
+                    elif pygame.sprite.collide_rect(background, wall2):
+                        if bx > 0:
+                            bx = 0
+                    elif pygame.sprite.collide_rect(player, css1):
                         live = False
                         pygame.mixer.music.stop()
                         csfx.play()
-                        player = Player()
                     elif pygame.sprite.collide_rect(player, css2):
                         live = False
                         pygame.mixer.music.stop()
@@ -205,6 +246,24 @@ else:
                         complete = True
                         pygame.mixer.music.stop()
                         lcfx.play()
+                player.velocity[0] = int(600 * dt * (ax - bx))
+                player.velocity[1] = int(600 * dt * (ay - by))
+                css1.velocity[0] = int(-600 * dt * bx)
+                css1.velocity[1] = int(-600 * dt * by)
+                css2.velocity = css1.velocity
+                sat1.velocity = css1.velocity
+                sat2.velocity = css1.velocity
+                goal.velocity = css1.velocity
+                wall1.velocity = css1.velocity
+                wall2.velocity = css1.velocity
+                wall3.velocity = css1.velocity
+                wall4.velocity = css1.velocity
+                ast1.velocity[0] = int(-200 * dt * bx)
+                ast1.velocity[1] = int(-200 * dt * by)
+                ast2.velocity[0] = int(-150 * dt * bx)
+                ast2.velocity[1] = int(-150 * dt * by)
+                ast3.velocity[0] = int(-120 * dt * bx)
+                ast3.velocity[1] = int(-120 * dt * by)
             if b0:
                 #this stop music playback
                 pygame.mixer.music.stop()
@@ -223,10 +282,14 @@ else:
                 css2 = Css(500,400)
                 sat1 = Sat(550,-100)
                 sat2 = Sat(600,100)
-                goal = Goal(3000,-200)
+                goal = Goal(3000,-100)
                 ast1 = Ast(120,200)
                 ast2 = Ast(300,100)
                 ast3 = Ast(500,150)
+                wall1 = Wallh(-100,-200)
+                wall2 = Wallh(3100,-200)
+                wall3 = Wallv(-200,-200)
+                wall4 = Wallv(-200,800)
                 live = True
                 complete = False
                 pygame.mixer.music.play(-1)
@@ -240,6 +303,10 @@ else:
             ast1.update()
             ast2.update()
             ast3.update()
+            wall1.update()
+            wall2.update()
+            wall3.update()
+            wall4.update()
             if live:
                 screen.blit(background.image, background.rect)
                 screen.blit(ast3.image, ast3.rect)
