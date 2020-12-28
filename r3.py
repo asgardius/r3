@@ -225,7 +225,7 @@ else:
                     elif pygame.sprite.collide_rect(background, wall2):
                         if bx > 0:
                             bx = 0
-                    elif pygame.sprite.collide_rect(player, css1):
+                    if pygame.sprite.collide_rect(player, css1):
                         live = False
                         pygame.mixer.music.stop()
                         csfx.play()
