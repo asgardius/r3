@@ -16,10 +16,17 @@ else:
     joystick = pygame.joystick.Joystick(0)
     #tested with ds4 controller on rpi, please use joysticktest script to test your controller
     joystick.init()
-    if int(joystick.get_numaxes()) < 5:
-        print ("Please connect a compatible joystick")
+    if (int(joystick.get_numaxes()) > 3) & ((str(platform.machine()) == "x86") | (str(platform.machine()) == "AMD64")):
+        gamepad = 1
+        compatible = True
+        
+    elif int(joystick.get_numaxes()) > 4:
+        gamepad = 2
+        compatible = True
     else:
-        screen = pygame.display.set_mode((1024, 600))
+        compatible = False
+    if compatible:
+        screen = pygame.display.set_mode((800, 480))
         pygame.display.set_caption('The Red Robot Radio - Virtualx Game Engine')
         font = pygame.font.Font(None, 30)
         clock = pygame.time.Clock()
@@ -187,9 +194,14 @@ else:
             #ax and ay are for left stick
             ax = joystick.get_axis(0)
             ay = joystick.get_axis(1)
-            #bx and by are for right stick
-            bx = joystick.get_axis(3)
-            by = joystick.get_axis(4)
+            if gamepad == 1:
+                #bx and by are for right stick
+                bx = joystick.get_axis(2)
+                by = joystick.get_axis(3)
+            elif gamepad == 2:
+                #bx and by are for right stick
+                bx = joystick.get_axis(3)
+                by = joystick.get_axis(4)
             #b0 is for cross button on ds4
             b0 = joystick.get_button(0)
             #b1 is for circle button on ds4
@@ -354,3 +366,5 @@ else:
             #screen.blit(infox, (50, 110))
             #screen.blit(infoy, (50, 140))
             pygame.display.update()
+    else:
+        print ("Unknown Joystick Detected")
